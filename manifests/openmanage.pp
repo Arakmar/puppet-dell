@@ -48,7 +48,7 @@ class dell::openmanage (
 
   case $::osfamily {
     'RedHat' : {
-      if $::operatingsystemmajrelease < 7 {
+      if $::operatingsystemmajrelease < '7' {
         if $environment != 'vagrant' {
           service { 'dataeng':
             ensure     => 'running',
@@ -185,7 +185,7 @@ class dell::openmanage (
   # to segfault during startup.
   #
   if $::osfamily == 'RedHat' {
-    if $::operatingsystemmajrelease < 7 {
+    if $::operatingsystemmajrelease < '7' {
       file_line { 'CentOS 7 srvadmin-storage compatibility fix':
         ensure => 'absent',
         path   => '/opt/dell/srvadmin/etc/srvadmin-storage/stsvc.ini',
