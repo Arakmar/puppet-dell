@@ -40,6 +40,7 @@ class dell::openmanage (
     'srvadmin-omilcore',
     'srvadmin-deng',
     'srvadmin-omcommon',
+    'srvadmin-omacore'
   ]
   package { $base_packages:
     ensure  => 'present',
@@ -115,62 +116,8 @@ class dell::openmanage (
     }
   }
 
-  # check_openmanage needs these packages
-  case $::osfamily {
-    'Debian' : {
-      $checkom_packages = ['libnet-snmp-perl', 'libconfig-tiny-perl', 'libxslt1.1']
-      ensure_packages($checkom_packages)
-    }
-    'RedHat' : {
-      $checkom_packages = ['perl-Net-SNMP', 'perl-Config-Tiny', 'libxslt']
-      ensure_packages($checkom_packages)
-    }
-  }
 
-  file { '/usr/local/bin/check_openmanage':
-    ensure => 'present',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-    source => 'puppet:///modules/dell/check_openmanage',
-  }
 
-  file { '/usr/share/man/man8/check_openmanage.8':
-    ensure => 'present',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-    source => 'puppet:///modules/dell/check_openmanage.8',
-  }
-
-  file { '/usr/share/man/man5/check_openmanage.conf.5':
-    ensure => 'present',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '644',
-    source => 'puppet:///modules/dell/check_openmanage.conf.5',
-  }
-
-  file { '/etc/check_openmanage.conf':
-    ensure  => 'present',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('dell/check_openmanage.conf.erb'),
-  }
-
-  # This can be removed sometime after 20140310
-  file { '/etc/cron.hourly/check_openmanage':
-    ensure => 'absent',
-    source => 'puppet:///modules/dell/check_openmanage.cron',
-    mode   => '0755',
-  }
-
-  file { '/etc/cron.daily/check_openmanage':
-    ensure => 'present',
-    source => 'puppet:///modules/dell/check_openmanage.cron',
-    mode   => '0755',
-  }
 
   if $environment != 'vagrant' {
     service { $ipmiservice:
