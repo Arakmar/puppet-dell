@@ -70,7 +70,7 @@ class dell::repos() inherits dell::params {
       # Create the DSU Repositories
       ########################################
 
-      yumrepo { 'dell-dsu-os_independent':
+      yum::managed_yumrepo { 'dell-dsu-os_independent':
         descr          => 'Dell System Update Repository - OS Independent',
         baseurl        => 'http://linux.dell.com/repo/hardware/latest/os_independent/',
         gpgkey         => 'http://linux.dell.com/repo/hardware/latest/public.key',
@@ -79,7 +79,7 @@ class dell::repos() inherits dell::params {
         failovermethod => 'priority',
       }
 
-      yumrepo { 'dell-dsu-os_dependent':
+      yum::managed_yumrepo { 'dell-dsu-os_dependent':
         descr          => 'Dell System Update Repository - OS Dependent',
         mirrorlist     => 'http://linux.dell.com/repo/hardware/latest/mirrors.cgi?osname=el$releasever&basearch=$basearch&native=1',
         gpgkey         => 'http://linux.dell.com/repo/hardware/latest/public.key',
